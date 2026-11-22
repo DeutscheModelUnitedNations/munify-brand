@@ -1,0 +1,244 @@
+# MUNify — Logo Guidelines
+
+Concept **Chamber**: the assembly seen from above, four equal benches around the table, the ring
+left open at the floor. One idea, one colour, no effects.
+
+All masters are SVG with outlined type. No file contains live text, rasters, filters or masks.
+The masters are drawn by `workspace/build.py`; every other file is generated from them (§7).
+
+---
+
+## 1. The logo
+
+| Use                                   | File (in `assets/`)                                          |
+| ------------------------------------- | ------------------------------------------------------------ |
+| Default, most places                  | `munify/horizontal-blue.svg`                                 |
+| Narrow or square space                | `munify/stacked-blue.svg`                                    |
+| Avatar, favicon, app icon, any square | `munify/symbol-blue.svg`                                     |
+| Running text, letterhead              | `munify/wordmark-blue.svg`                                   |
+| A product                             | `chase/horizontal-blue.svg`, `delegator/horizontal-blue.svg` |
+| A product, narrow space               | `chase/compact-blue.svg`, `delegator/compact-blue.svg`       |
+
+Each exists in `-blue`, `-black`, `-white`, `-reversed` (white on navy) and `-on-white` (with
+clear space).
+
+**Sub-brands.** A product never gets its own symbol. It takes the MUNify mark and wordmark, then
+its name in Outfit Light after a hairline rule. A third tool costs one line of type.
+
+---
+
+## 2. Clear space
+
+Keep clear space equal to **the centre table square** on all four sides — the small square at the
+heart of the symbol. That is ~24% of the symbol's height, and it scales with the logo.
+
+Nothing enters that area: no type, no rules, no image edges, no other logos.
+
+---
+
+## 3. Minimum size
+
+| Asset                      | Minimum                                          |
+| -------------------------- | ------------------------------------------------ |
+| Symbol                     | 16 px (switch to the small-size cut below 24 px) |
+| Horizontal lockup          | 160 px wide                                      |
+| Compact sub-brand lockup   | 200 px wide                                      |
+| Stacked lockup             | 110 px wide                                      |
+| Sub-brand horizontal (8:1) | 300 px wide — below that use the compact cut     |
+
+**The small-size cut.** `munify/symbol-small-blue.svg` has a heavier band and wider gaps so the
+gaps stay open when the mark is tiny. It is already wired into the favicon and web-icon set. Use
+it anywhere the symbol renders below 24 px; use the standard cut everywhere else.
+
+In print, the symbol holds to about 6 mm. Below that the gaps fill with ink.
+
+---
+
+## 4. Colour
+
+| Role             | Value                  | Token                        |
+| ---------------- | ---------------------- | ---------------------------- |
+| The logo         | `#01548F`              | `--color-primary`, DMUN-Blau |
+| On dark          | `#FFFFFF` on `#1B1837` | `--navy-900`                 |
+| One-colour print | `#000000`              | `--ink`                      |
+
+Approved grounds: white `#FFFFFF`, paper-tint `#F0EFF5`, navy `#1B1837`.
+
+Two rules from the DMUN Corporate Design, not negotiable:
+
+- **DMUN-Blau never goes on the dark ground**, and never covers large areas. On `#1B1837` the logo
+  is white.
+- **The accent turquoise `#6D9392` is not a logo colour.** It stays in charts, accent stripes and
+  decorative elements.
+
+The reversed mark optically gains weight against dark (irradiation). At display sizes on dark,
+thin the white geometry by hand rather than scaling the blue master.
+
+---
+
+## 5. Typography
+
+Outfit, from the DMUN corporate identity package.
+
+- **MUN** — Outfit Semibold (600)
+- **ify** — Outfit Light (300)
+- **Sub-brand names** — Outfit Light (300), letterspaced
+
+Tracking in the wordmark is −2 units at 168 px (≈ −0.012 em). The masters are outlined, so no font
+ships with the logo, but anything set alongside it should use Outfit.
+
+---
+
+## 6. Don'ts
+
+- Don't recolour it, including into the turquoise accent.
+- Don't put DMUN-Blau on the navy ground.
+- Don't add a shadow, gradient, glow or bevel. The identity is flat: `--depth: 0`, `--noise: 0`.
+- Don't round the corners of the app-icon tile. `--radius-box: 0`.
+- Don't rotate, stretch, skew or outline it.
+- Don't rebuild the symbol for a product, or change the gaps, the opening or the table.
+- Don't place it over busy photography. Use a solid approved ground.
+- Don't set the wordmark in a different typeface, or reconstruct it from live text.
+
+---
+
+## 7. Files
+
+Everything below `assets/` is generated from the blue masters in `masters/` by
+`bun run generate`. Per product (`munify`, `chase`, `delegator`):
+
+```
+assets/<product>/
+  <variant>-{blue,black,white}.svg|.png|-hires.png   the mark in one colour, transparent
+  <variant>-reversed.svg|.png|-hires.png             white on navy
+  <variant>-on-white.svg|.png|-hires.png             blue on white, 22% clear space
+  symbol-small-{blue,black,white}.svg                small-size cut, below 24 px
+  lift-{blue,reversed}.svg|.png                      the depth set, screens only (§9)
+  og-card.svg|.png                                   1200×630 link preview
+  web/                                               favicon.ico (16/32/48), favicon.svg (dark-aware),
+                                                     favicon-16/32/48, apple-touch-icon, icon-192/512,
+                                                     maskable-192/512, safari-pinned-tab.svg,
+                                                     site.webmanifest
+  splash/{light,dark}/<w>x<h>.png                    iOS launch images
+```
+
+Variants: MUNify has `symbol`, `symbol-small`, `wordmark`, `horizontal`, `stacked`; CHASE and
+DELEGATOR have `symbol`, `symbol-small`, `horizontal` (the sub-brand lockup) and `compact`.
+`.png` is 2000 px on the long edge, `-hires.png` 8000 px (print; not in the npm package, use the
+SVG where you can). The rasters ≤ 48 px use the small cut, everything from 96 px the standard cut.
+
+The geometry itself is code in `workspace/` (Python): `build.py`, `products.py` and `tiles.py`
+redraw the marks into `workspace/kit/`; copy a changed blue mark into `masters/` and run
+`bun run generate`.
+
+Send the SVG to printers, not a screen PNG. For spot colour, match `#01548F` with a proofed
+Pantone — it has not been proofed here.
+
+---
+
+## 8. The family
+
+Each product has its own symbol, built from the chamber's vocabulary — arcs and
+squares, angles on multiples of 15°, one band weight, flat, zero radius — but
+not from the chamber itself.
+
+|               | Symbol                 | Reading                                             | Files               |
+| ------------- | ---------------------- | --------------------------------------------------- | ------------------- |
+| **MUNify**    | the chamber            | five benches around the table, the widest left open | `assets/munify/`    |
+| **CHASE**     | an arch over a rostrum | the house above in benches, one of them open        | `assets/chase/`     |
+| **DELEGATOR** | seating grid           | eight seats, two still to fill                      | `assets/delegator/` |
+
+**One place is left open in every mark.** That is the thread holding the family
+together, not a shared shape. MUNify's double-width bench is drawn open;
+CHASE's right-hand bench is open; DELEGATOR has two seats open. Every opening
+is drawn on the **same 12-unit border**, so the three share a weight even where
+they share no geometry.
+
+MUNify's ring is four benches of 41.25° plus one of 82.5° left open, with
+22.5° gaps: `(nsolid + 2) * w + (nsolid + 1) * gap = 360`.
+
+**The 30° rotation is load-bearing, not styling.** A wide opening centred
+beneath a symmetric pair of benches reads as a mouth, and the whole mark
+becomes a smiley face — which is exactly what the first draft did. Rotating the
+open bench off the vertical axis destroys that reading. Keep the rotation a
+multiple of 15° and every boundary shifts by a multiple of 15°, staying clear
+of a near-miss angle; only gaps of 22.5° and 30° satisfy that with four solid
+benches.
+
+CHASE's arch is three benches of 45° with 22.5° gaps, which fills the half
+circle exactly and matches MUNify's angular rhythm. The right-hand bench is the
+open one, echoing MUNify's off-centre opening. **The rostrum has to stay
+lighter than the arch** — at 124 × 54 it stopped reading as a desk and became a
+plinth the arch was standing on.
+
+DELEGATOR's vacancies are mid-left and bottom-right — deliberately not a
+symmetric pair, so the grid reads as a chart with two seats still to fill
+rather than as a pattern. **Avoid axis pairs** (ML+MR, TC+BC): they line up
+with the already-open centre, make three open cells in a row, and split the
+grid into two groups.
+
+**The small-size cut** (`-small-`) drops every outline and goes solid — a
+12-unit border closes up below about 24 px. It is already wired into the
+`web-*` sets for the 16/32/48 px rasters. Everything from 96 px up uses the
+standard cut, so the open places show; `bun run generate` renders them.
+
+**Rejected, so the ground is not re-covered:** two arcs facing each other
+across the table reads as an eye. A ring with one quadrant open reads as a
+letter G. Concentric tiers over a rostrum read as a wifi symbol. A horseshoe
+with a block beneath it reads as a padlock. A shallow canopy over a square
+reads as a mushroom. A wide opening centred under a symmetric pair of benches
+is a smiley face. Telling the products apart by bench count alone is a
+spot-the-difference puzzle and carries no meaning.
+
+---
+
+## 9. Depth, for screens only
+
+`<product>/lift-*.svg` holds the expressive set: the flat marks raised off the page with
+a soft shadow, in blue on white and white on navy. The reversed ones use a
+black shadow, since `#013256` disappears into the navy ground.
+
+**These are not masters.** They carry a filter, so they do not print, they
+render inconsistently across browsers, and they contradict the guidelines'
+`--depth: 0` and `--noise: 0`. They audit 75/100 against the flat marks' 100.
+Use them for app-store listings, social and marketing. Never for the favicon,
+never in print, never where the mark has to go one-colour. `bun run generate` renders them
+from the symbol (`workspace/depth.py` drew the originals).
+
+A gradient version was built and dropped: on DELEGATOR it tints each seat
+differently, which quietly undoes the equal-seats idea the grid is built on.
+
+---
+
+## 10. Handover notes
+
+**Why this mark.** The brief asked for calm, structured and fair. Those are built into the
+geometry rather than described: every bench is identical, the mark is mirror-symmetric, and the
+single opening at the bottom is the floor — the one place the circle is deliberately incomplete,
+which is what a debate is. The category reading supported going symmetric and formal rather than
+colourful: productivity-collaboration software is 26% blue and education 43% blue, so blue buys no
+distinction and the form has to carry it. A letterform M was the alternative and tested stronger at
+16 px, but it put an M next to the M of MUNify in every lockup.
+
+**What was tested.** SVG audit (clean, 100/100 for both symbol cuts; the remaining near-miss-angle
+notes on the lockups are Outfit's own diagonals in M and y). Rendered and inspected at 512 px.
+Size ladder at 96/32/16 px. One-colour and reversed. The first ring read as a lifebuoy and the
+gaps closed at 32 px; both were fixed by widening the gaps to 20°, thickening the band, and
+snapping every segment boundary clear of a near-miss angle.
+
+**Open items.**
+
+1. **Trademark clearance has not been done.** The 1,432-logo reference library showed no collision
+   for this construction, but that is not a search. Commission a professional one against
+   trademark databases plus reverse image search before any public launch.
+2. **Outfit licence.** Confirm it permits logo use. The letterforms here are outlined from the
+   variable font at weights 600 and 300.
+3. **Pantone/CMYK.** `#01548F` has not been proofed for print.
+4. **Favicons.** Every product's web set (favicons, app and maskable icons, launch images) is
+   generated here and served by the apps from the package; manifests declare `any` and `maskable`.
+5. **16 px.** All three marks survive 16 px as distinct silhouettes, but none is _legible_ there —
+   the chamber is a cluster, CHASE is an arch, DELEGATOR is a texture. That is normal at that size.
+6. **The audit flags four near-miss angles on MUNify.** They are a false positive: 72° slots are not
+   multiples of 15°, and snapping them would break the equal-slot geometry. Mirror symmetry is intact.
+7. **MUNify now reads as "the room is open"** rather than "one seat is free", since both the slot and
+   the table are open. That is a change of meaning, not only of weight.

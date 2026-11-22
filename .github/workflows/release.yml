@@ -1,0 +1,38 @@
+name: Release
+
+# Publishes to npm when a GitHub release is published. The release's tag is the version: `v0.2.0`
+# publishes 0.2.0, whatever package.json says, so a release needs no bump commit. Uses npm's
+# trusted publishing: npm trusts this workflow (`release.yml` of this repository, set in the
+# package's settings on npmjs.com) through GitHub's OIDC token, so there is no npm token, and the
+# package gets provenance on its own.
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      # Trusted publishing needs npm 11.5.1 or newer
+      - run: npm install -g npm@latest
+      - run: bun install --frozen-lockfile
+      - name: Take the version from the tag
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]] || { echo "::error::Tag $TAG is not v<semver>"; exit 1; }
+          npm version "${TAG#v}" --no-git-tag-version --allow-same-version
+      - run: bun run check
+      - run: bun run test
+      - run: bun run build
+      - run: npm publish --access public

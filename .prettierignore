@@ -1,0 +1,7 @@
+bun.lock
+dist
+node_modules
+.svelte-kit
+assets
+src/lib/marks.generated.ts
+workspace
