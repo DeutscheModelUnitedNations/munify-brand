@@ -44,6 +44,11 @@ package leaves them out.
 bun add @deutschemodelunitednations/munify-brand
 ```
 
+`svelte` (5.50 or newer) and `vite` (6 or newer) are optional peer dependencies. Svelte is needed
+only for the components: the root import (`Logo`, `BrandHead` and the helpers re-exported beside
+them) loads `.svelte` files, while `/vite` and `/assets/*` import no Svelte. The Vite plugin needs
+Vite. A project that only uses the files under `assets/` installs neither.
+
 **Icons, manifest, launch images, social card.** Add the plugin and put `BrandHead` in the root
 layout. Delete the app's own `favicon*`, `apple-touch-icon*`, `android-chrome-*`, `maskable-*`,
 `safari-pinned-tab.svg`, `site.webmanifest` and splash screens from `static/`.
