@@ -138,16 +138,13 @@ commit is needed. The workflow checks, tests, builds and publishes to npm throug
 publishing** — no token: npm trusts `release.yml` of this repository through GitHub's OIDC token,
 and the package gets provenance.
 
-Setting that up once, on npmjs.com:
+A version npm already has is skipped with a notice instead of failing the run (`0.1.0` was
+published by hand, as npm offers trusted publishing only for a package that exists).
 
-1. npm only offers trusted publishing for a package that exists. Publish `0.1.0` once by hand from
-   a clean checkout of `main`, as a member of the `deutschemodelunitednations` org:
-   `bun install && bun run build && npm publish --access public`.
-2. In the package's **Settings → Trusted publishing**, add a GitHub Actions publisher:
-   organisation `DeutscheModelUnitedNations`, repository `munify-brand`, workflow `release.yml`,
-   no environment.
-3. Under **Publishing access**, choose "Require two-factor authentication and disallow tokens".
-   From then on only the workflow can publish.
+The npm side, set up once in the package's settings on npmjs.com: **Trusted publishing** names
+organisation `DeutscheModelUnitedNations`, repository `munify-brand`, workflow `release.yml`, no
+environment; **Publishing access** should "Require two-factor authentication and disallow tokens",
+so only the workflow can publish.
 
 ## Licence
 
