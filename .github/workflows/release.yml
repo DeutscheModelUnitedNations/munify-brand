@@ -35,4 +35,16 @@ jobs:
       - run: bun run check
       - run: bun run test
       - run: bun run build
-      - run: npm publish --access public
+      # A version published by hand (or by an earlier run) cannot be published again: npm would
+      # refuse and fail the release, although the package is out. Skip instead, with a notice.
+      - name: Check whether npm already has this version
+        id: published
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          if npm view "$(node -p 'require("./package.json").name')@${TAG#v}" version > /dev/null 2>&1; then
+            echo "::notice::${TAG#v} is already on npm, nothing to publish"
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.published.outputs.exists != 'true'
+        run: npm publish --access public
